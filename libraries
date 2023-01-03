@@ -1,0 +1,33 @@
+https://reactnavigation.org/docs/getting-started
+ npm install @react-navigation/native
+ npx expo install react-native-screens react-native-safe-area-context
+ npm install @react-navigation/native-stack
+
+expo install firebase
+
+Authentication documentation:
+https://firebase.google.com/docs/auth/web/start?authuser=1&hl=en
+
+npm install firebase@9.13.0 --save
+
+npm install @react-native-community/datetimepicker --save
+or expo install @react-native-community/datetimepicker  
+
+npm install --save react-native-dialog-input
+
+expo install react-native-keyboard-aware-scroll-view
+
+expo install react-native-keyboard-aware-view
+expo install react-native-tooltips
+
+expo install @react-native-async-storage/async-storage
+
+npm install react-native-modal
+npm install --save react-native-image-picker 
+npx expo install react-native-screens react-native-safe-area-context
+npm install react-native-root-toast
+npm install @react-navigation/material-top-tabs  
+npm install react-native-tab-view   
+npm install @react-navigation/material-bottom-tabs
+npm install @react-navigation/bottom-tabs   
+npm install react-native-element-dropdown
