@@ -1,18 +1,24 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import Background from "./Background";
 import Btn from "./Btn";
 import { darkGreen, green } from "./Constants";
 import { useNavigation } from '@react-navigation/core';
 import { auth } from '../Firebase/config'
+import loginContext from '../Context/Login/loginContext';
 
 const Index = (props) => {
+
+    const a = useContext(loginContext)
+
     
     const navigation = useNavigation();
     React.useEffect(() => {
+         
       const unsubscribe = auth.onAuthStateChanged(user => {
+        
         if(user){
-          navigation.replace("HomePage");
+              navigation.replace("HomePage");
         }
       });
      

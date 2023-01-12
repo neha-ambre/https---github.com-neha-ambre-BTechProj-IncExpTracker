@@ -1,97 +1,52 @@
-import * as React from 'react'
-import {Text,View,Button,StyleSheet,Image, ImageBackground, TouchableOpacity, Dimensions} from 'react-native'
+import React,{useContext} from 'react'
+import {Text,View,Button,StyleSheet,Image, ImageBackground, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
 import {NavigationContainer} from '@react-navigation/native'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { useState, useEffect } from "react";
 import { auth , db } from '../Firebase/config'
+import {
+    collection,
+    getDocs,
+  } from '../Firebase/config';
+
 
 const Tab = createMaterialTopTabNavigator();
 const BTab = createBottomTabNavigator();
 const {height, width} = Dimensions.get('window');
 import { useNavigation } from '@react-navigation/core';
 import Background from './Background';
+import Container from './Container';
+import ShowIncome from './Income/ShowIncome';
+import ShowExpense from './Expense/ShowExpense';
+import loginContext from '../Context/Login/loginContext';
 
-function Income(props){
-    const navigation = useNavigation();
-    const signOutFromAcc = () => {
-        auth
-            .signOut()
-            .then(() => {
-                navigation.replace("Login");
-                console.log("Sign out")
-            })
-            .catch(error => console.error(error.message));
-    }
-    return(
-        <>
-         <View style={{width:'100%'}}>
-            <ImageBackground
-                source={require('../assets/background4.jpg')}
-                style={{ height: "100%",flexDirection:'column',justifyContent:'flex-end'}}
-            >
-                <View style={{justifyContent:'center',alignItems: 'center',marginBottom:40}}>
-                <View 
-                    style={{width:70,
-                    height:70,
-                    borderRadius:35,
-                    backgroundColor:"#006A42",
-                    justifyContent:'center',
-                    alignItems: 'center',
-                    alignSelf: 'center',
-                    marginTop:5,
-                    marginBottom:5 
-                }}
-                onStartShouldSetResponder={()=>{props.navigation.navigate('AddIncome')}}
-                >
-                <Image source={require('../assets/plus.png')}
-                style={{width:30,height:30}}
-                onPress={() => console.log('image pressed')}
-                />
-                </View>
-                </View>
-
-           
-            
-           <View style={{fontWeight:'50%',borderTopLeftRadius:140,borderTopEndRadius: 140,width:(width*0.9),alignSelf:'center'}}>
-            <Button color="grey" style={{fontWeight:'50%',borderRadius:15,marginBottom:10}} title="Sign Out" onPress={signOutFromAcc}></Button>
-          </View>
-          </ImageBackground>
-         </View>
-   
-       
-        </>
-    )
-}
-
-function Expense(){
-    return(
-        <View>
-            <Text>Expense page</Text>
-        </View>
-    )
-}
 
 function MyTabs({navigation}) {
+    
 
-    const insets = useSafeAreaInsets();
+    const [incomeRecords,setIncomeRecords] = useState([])
+   
+    const a=useContext(loginContext)
 
     return(
         <Tab.Navigator
         initialRouteName="Income"
-        tabBarOptions={{
+        screenOptions={{
             activeTintColor:'green',
             labelStyle:{fontSize:16},
-            style:{backgroundColor:'white',marginTop:insets.top}
+            style:{backgroundColor:'white'}
         }}>
+            {/* {console.log(a.userState,a.loggedIn)} */}
             <Tab.Screen 
             name="Income"
-            component={Income} 
+            component={ShowIncome} 
             />
 
             <Tab.Screen 
             name="Expense"
-            component={Expense} 
+            component={ShowExpense} 
             options={{tabBarLabel:'Expense'}}/>
 
             
@@ -160,9 +115,10 @@ function BottomTab(){
 }
 
 export default function HompePage({navigation}){
+    const insets = useSafeAreaInsets();
     return(
         // <NavigationContainer independent={true}>
-           <View style={{flex:1,flexDirection: 'column'}}>
+           <View style={{flex:1,flexDirection: 'column',marginTop:insets.top}}>
             <MyTabs navigation={navigation}/>
             {/* <Background></Background> */}
            </View>

@@ -14,27 +14,30 @@ import {
 } from "react-native";
 // import DatePicker from 'react-native-datepicker';
 import DateTimePicker from "@react-native-community/datetimepicker";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   db,
   collection,
   addDoc,
   getDocs,
   storage,
-} from '../Firebase/config';
+  auth,
+  doc
+} from '../../Firebase/config';
 
 
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import uploadImg from "../assets/addImage.jpeg";
+import uploadImg from "../../assets/addImage.jpeg";
 // import { TouchableOpacity } from 'react-native-web';
 import * as ImagePicker from "expo-image-picker";
 import Toast from "react-native-root-toast";
-import Btn from "./Btn";
-import Background from "./Background";
-import { darkGreen } from "./Constants";
+import Btn from "../Btn";
+import Background from "../Background";
+import { darkGreen } from "../Constants";
+import AddIncomeContext from "../../Context/Income/AddIncomeContext";
 
 const { width } = Dimensions.get("window");
 
@@ -49,6 +52,7 @@ export default function AddIncome({navigation}) {
 
   const [amount, setAmount] = useState(0);
   const [description, setDescription] = useState("");
+  const a = useContext(AddIncomeContext)
  
   useEffect(()=>{
     const loadData=async () => {
@@ -137,7 +141,7 @@ export default function AddIncome({navigation}) {
         IncCatName: value,
       });
 
-      const querySnapshot = await getDocs(collection(db, "income"));
+      const querySnapshot = await getDocs(collection(db, "Income"));
       querySnapshot.forEach((doc) => {
       console.log(doc.id, JSON.stringify(doc.data()));
       });
@@ -317,7 +321,7 @@ export default function AddIncome({navigation}) {
       console.log(selectedCategory);
       if(pickedImagePath != Image.resolveAssetSource(uploadImg).uri)
       {
-        const docRef = await addDoc(collection(db, "income"), {
+        const docRef = await addDoc(collection(doc(db,"User",auth.currentUser.uid), "Income"), {
           incAmount: amount,
           incDate: date,
           incCategory: selectedCategory,
@@ -326,16 +330,16 @@ export default function AddIncome({navigation}) {
         });
       }
       else{
-        const docRef = await addDoc(collection(db, "income"), {
+        const docRef = await addDoc(collection(doc(db,"User",auth.currentUser.uid), "Income"), {
           incAmount: amount,
           incDate: date,
           incCategory: selectedCategory,
-          incDescription: description,
+          incDescription: description
         });
       }
       // console.log("Document written with ID: ", docRef.id);
 
-      const querySnapshot = await getDocs(collection(db, "income"));
+      const querySnapshot = await getDocs(collection(db, "Income"));
       querySnapshot.forEach((doc) => {
         console.log(doc.id, JSON.stringify(doc.data()));
       });
@@ -494,7 +498,7 @@ export default function AddIncome({navigation}) {
                       ...category,
                       { label: selectedCategory, value: selectedCategory },
                     ]);
-                    // addCategoryToFD(selectedCategory);
+                    addCategoryToFD(selectedCategory);
                   }}
                 />
               </View>
@@ -599,7 +603,7 @@ const styles = StyleSheet.create({
   container: {
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    height: 650,
+    height: 610,
     width: 360,
    backgroundColor: "#fff",
    marginTop: 5,
@@ -638,7 +642,7 @@ const styles = StyleSheet.create({
 
     elevation:5,
     backgroundColor:"white",
-    marginTop:30,
+    marginTop:10,
     paddingTop:5,
     paddingLeft:20
   },

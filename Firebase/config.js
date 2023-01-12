@@ -3,21 +3,31 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { initializeApp} from "firebase/app";
 import { getAuth } from 'firebase/auth';
 import { initializeAuth, getReactNativePersistence} from 'firebase/auth/react-native';
-import { getFirestore,addDoc,getDocs,collection } from "firebase/firestore";
+import { getFirestore,addDoc,getDocs,collection,doc } from "firebase/firestore";
 import { getStorage } from '@firebase/storage';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// const firebaseConfig = {
+//   apiKey: "AIzaSyAn-FJu98mjxPehbtoeUNhEKwziwJ-eLOU",
+//   authDomain: "incomeandexpensetracker-aebb3.firebaseapp.com",
+//   projectId: "incomeandexpensetracker-aebb3",
+//   storageBucket: "incomeandexpensetracker-aebb3.appspot.com",
+//   messagingSenderId: "401740120924",
+//   appId: "1:401740120924:web:83c729f87c24074139f799",
+//   measurementId: "G-Y9GFMCPCTX"
+// };
+
 const firebaseConfig = {
-  apiKey: "AIzaSyAn-FJu98mjxPehbtoeUNhEKwziwJ-eLOU",
-  authDomain: "incomeandexpensetracker-aebb3.firebaseapp.com",
-  projectId: "incomeandexpensetracker-aebb3",
-  storageBucket: "incomeandexpensetracker-aebb3.appspot.com",
-  messagingSenderId: "401740120924",
-  appId: "1:401740120924:web:83c729f87c24074139f799",
-  measurementId: "G-Y9GFMCPCTX"
+  apiKey: "AIzaSyD-Q3KgyVEaoFkrIGv3kDCxxY27YmDAuvM",
+  authDomain: "exampleincexp.firebaseapp.com",
+  projectId: "exampleincexp",
+  storageBucket: "exampleincexp.appspot.com",
+  messagingSenderId: "398216328035",
+  appId: "1:398216328035:web:db847850593dad53249956",
+  measurementId: "G-X2T2TEEN5L"
 };
 
 // Initialize Firebase
@@ -32,4 +42,4 @@ const auth = initializeAuth(app, {
   });
 const db = getFirestore(app);
 const storage = getStorage(app);
-export { auth,db, storage,addDoc,getDocs,collection };
+export { auth, db, storage, addDoc, getDocs, collection, doc };

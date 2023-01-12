@@ -1,13 +1,14 @@
 import { StyleSheet, Text, View, TextInput, Button, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
-import React from 'react';
-import { auth } from '../Firebase/config'
+import React,{useContext} from 'react';
+import { auth } from '../../Firebase/config'
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from '@react-navigation/core';
 import DialogInput from 'react-native-dialog-input';
-import Background from "./Background";
-import Btn from "./Btn";
-import Field from "./Field";
-import { darkGreen } from "./Constants";
+import Background from "../Background";
+import Btn from "../Btn";
+import Field from "../Field";
+import { darkGreen } from "../Constants";
+import loginContext from '../../Context/Login/loginContext';
 
 
 export default function Login(props) {
@@ -30,14 +31,22 @@ export default function Login(props) {
   }, []);
 
   const logInToAcc = ()=>{
+
     console.log("Logged In Successfully!!!", auth);
     signInWithEmailAndPassword(auth, userName, password)
       .then(userCredentials => {
         const user = userCredentials.user;
+        const currUser = {
+          "email":user.email,
+          "userid":user.uid
+        }
+        a.setLoggedIn(true);
+        a.setUserState(currUser);
+        console.log(currUser);
         console.log("user email :", user.email);
         navigation.replace("HomePage");
       })
-      .catch(error => alert(error.message));
+      .catch(error => alert("Please provide valid user credentials!"));
   }
 
   //validate email i.e username
@@ -75,6 +84,8 @@ export default function Login(props) {
         alert("Please enter valid email address!");
       });
   }
+
+  const a = useContext(loginContext)
 
   return (
     <Background>

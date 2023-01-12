@@ -1,14 +1,15 @@
 import { StyleSheet, Text, View, TextInput, Button, KeyboardAvoidingView, ScrollView, TouchableOpacity, Pressable} from 'react-native';
-import React from 'react';
-import { auth , db } from '../Firebase/config'
+import React,{useContext} from 'react';
+import { auth , db } from '../../Firebase/config'
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc , setDoc  } from "firebase/firestore";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Background from "./Background";
-import Btn from "./Btn";
-import Field from "./Field";
-import { darkGreen } from "./Constants";
+import Background from "../Background";
+import Btn from "../Btn";
+import Field from "../Field";
+import { darkGreen } from "../Constants";
 import { useNavigation } from '@react-navigation/core';
+import loginContext from '../../Context/Login/loginContext';
 
 export default function SignUp(props) {
   const [name, setName] = React.useState("");
@@ -107,6 +108,14 @@ const signUpToAcc = ()=>
             bankName: bankName,
             accBalance: accBalance
           });
+
+          const currUser = {
+            "email":user.email,
+            "userid":user.uid
+          }
+          a.setLoggedIn(true);
+          a.setUserState(currUser);
+
           console.log("User Added Successfully to database!!! ");
           navigation.replace("HomePage");
           
@@ -137,6 +146,7 @@ const signUpToAcc = ()=>
   
     }
 
+    const a = useContext(loginContext)
 
   
   const onChange = (event, selectedDate) => {
